@@ -1,21 +1,23 @@
 module.exports = {
-  extends: ["plugin:react/recommended", "google"],
+  extends: ['plugin:react/recommended', 'google'],
+  parser: 'babel-eslint',
   parserOptions: {
-    sourceType: "module",
+    sourceType: 'module',
     ecmaVersion: 8,
     ecmaFeatures: {
-      experimentalObjectRestSpread: true
-    }
+      experimentalObjectRestSpread: true,
+    },
   },
   rules: {
-    "object-curly-spacing": 0,
-    "max-len": [1, { code: 120 }],
-    "valid-jsdoc": 0,
-    "require-jsdoc": 0,
-    "react/display-name": 0
+    'object-curly-spacing': 0,
+    'max-len': [1, { code: 120 }],
+    'valid-jsdoc': 0,
+    'require-jsdoc': 0,
+    'react/display-name': 0,
+    'no-invalid-this': 0,
   },
   globals: {
     window: true,
-    document: true
-  }
+    document: true,
+  },
 };
