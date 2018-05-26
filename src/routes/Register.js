@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Container, Header, Button } from 'semantic-ui-react';
+import { Form, Message, Input, Container, Header, Button } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -8,16 +8,31 @@ class Register extends React.Component {
     username: '',
     email: '',
     password: '',
+    emailError: '',
+    password: '',
+    passwordError: '',
   };
 
   onSubmit = async () => {
+    const { username, email, password } = this.state;
     const { mutate } = this.props;
 
     const response = await mutate({
       variables: this.state,
     });
 
-    console.log(response);
+    const { ok, errors } = response.data.register;
+
+    if (ok) {
+      this.props.history.push('/');
+    } else {
+      const err = {};
+      errors.forEach(({ path, message }) => {
+        err[`${path}Error`] = message;
+      });
+
+      this.setState(err);
+    }
   };
 
   onChange = (e) => {
@@ -26,16 +41,27 @@ class Register extends React.Component {
   };
 
   render() {
-    const { username, email, password } = this.state;
+    const { username, email, password, usernameError, passwordError, emailError } = this.state;
     const { onChange, onSubmit } = this;
 
     return (
-      <Container>
+      <Container text>
         <Header as="h2">Register</Header>
-        <Input name="username" onChange={onChange} value={username} placeholder="Username" fluid />
-        <Input name="email" onChange={onChange} value={email} placeholder="Email" fluid />
-        <Input name="password" onChange={onChange} value={password} type="password" placeholder="Password" fluid />
-        <Button onClick={onSubmit}>Submit</Button>
+        <Form>
+          <Form.Field error={!!usernameError}>
+            <Input name="username" onChange={onChange} value={username} placeholder="Username" fluid />
+          </Form.Field>
+          <Form.Field error={!!emailError}>
+            <Input name="email" onChange={onChange} value={email} placeholder="Email" fluid />
+          </Form.Field>
+          <Form.Field error={!!passwordError}>
+            <Input name="password" onChange={onChange} value={password} type="password" placeholder="Password" fluid />
+          </Form.Field>
+          <Button onClick={onSubmit}>Submit</Button>
+        </Form>
+        {errorList.length ? (
+          <Message error header="There was some errors with your submission" list={errorList} />
+        ) : null}
       </Container>
     );
   }
@@ -43,7 +69,13 @@ class Register extends React.Component {
 
 const registerMutation = gql`
   mutation($username: String!, $email: String!, $password: String!) {
-    register(username: $username, email: $email, password: $password)
+    register(username: $username, email: $email, password: $password) {
+      ok
+      errors {
+        path
+        message
+      }
+    }
   }
 `;
 
