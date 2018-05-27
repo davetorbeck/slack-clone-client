@@ -43,7 +43,19 @@ class Register extends React.Component {
   render() {
     const { username, email, password, usernameError, passwordError, emailError } = this.state;
     const { onChange, onSubmit } = this;
+    const errorList = [];
 
+    if (usernameError) {
+      errorList.push(usernameError);
+    }
+
+    if (emailError) {
+      errorList.push(emailError);
+    }
+
+    if (passwordError) {
+      errorList.push(passwordError);
+    }
     return (
       <Container text>
         <Header as="h2">Register</Header>
