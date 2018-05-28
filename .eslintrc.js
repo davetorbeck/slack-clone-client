@@ -15,6 +15,7 @@ module.exports = {
     'require-jsdoc': 0,
     'react/display-name': 0,
     'no-invalid-this': 0,
+    'react/prop-types': 0,
   },
   globals: {
     window: true,
