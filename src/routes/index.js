@@ -5,6 +5,7 @@ import Home from './Home'
 import Register from './Register'
 import Login from './Login'
 import CreateTeam from './CreateTeam'
+import ViewTeam from './ViewTeam'
 
 const isAuthenticated = () => {
   const token = localStorage.getItem('token')
