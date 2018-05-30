@@ -5,7 +5,7 @@ import SendMessage from '../components/SendMessage'
 import AppLayout from '../components/AppLayout'
 import Sidebar from '../containers/Sidebar'
 
-export default () => (
+const ViewTeam = () => (
   <AppLayout>
     <Sidebar />
     <Header channelName="general" />
@@ -18,3 +18,5 @@ export default () => (
     <SendMessage channelName="general" />
   </AppLayout>
 )
+
+export default ViewTeam
