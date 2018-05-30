@@ -2,6 +2,8 @@ import React from 'react'
 import Channels from '../components/Channels'
 import Teams from '../components/Teams'
 import { gql, graphql } from 'react-apollo'
+import _ from 'lodash'
+import decode from 'jwt-decode'
 
 const Sidebar = ({ data: { loading, allTeams }, currentTeamId }) => {
   if (loading) {
