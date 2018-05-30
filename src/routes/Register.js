@@ -1,61 +1,60 @@
-import React from 'react';
-import { Form, Message, Input, Container, Header, Button } from 'semantic-ui-react';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+import React from 'react'
+import { Form, Message, Input, Container, Header, Button } from 'semantic-ui-react'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
 class Register extends React.Component {
   state = {
     username: '',
     email: '',
-    password: '',
     emailError: '',
     password: '',
     passwordError: '',
-  };
+  }
 
   onSubmit = async () => {
-    const { username, email, password } = this.state;
-    const { mutate } = this.props;
+    const { mutate } = this.props
 
     const response = await mutate({
       variables: this.state,
-    });
+    })
 
-    const { ok, errors } = response.data.register;
+    const { ok, errors } = response.data.register
 
     if (ok) {
-      this.props.history.push('/');
+      this.props.history.push('/')
     } else {
-      const err = {};
+      const err = {}
       errors.forEach(({ path, message }) => {
-        err[`${path}Error`] = message;
-      });
+        err[`${path}Error`] = message
+      })
 
-      this.setState(err);
+      this.setState(err)
     }
-  };
+  }
 
   onChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  };
+    const { name, value } = e.target
+    this.setState({ [name]: value })
+  }
 
   render() {
-    const { username, email, password, usernameError, passwordError, emailError } = this.state;
-    const { onChange, onSubmit } = this;
-    const errorList = [];
+    const { username, email, password, usernameError, passwordError, emailError } = this.state
+    const { onChange, onSubmit } = this
+    const errorList = []
 
     if (usernameError) {
-      errorList.push(usernameError);
+      errorList.push(usernameError)
     }
 
     if (emailError) {
-      errorList.push(emailError);
+      errorList.push(emailError)
     }
 
     if (passwordError) {
-      errorList.push(passwordError);
+      errorList.push(passwordError)
     }
+
     return (
       <Container text>
         <Header as="h2">Register</Header>
@@ -75,7 +74,7 @@ class Register extends React.Component {
           <Message error header="There was some errors with your submission" list={errorList} />
         ) : null}
       </Container>
-    );
+    )
   }
 }
 
@@ -89,6 +88,6 @@ const registerMutation = gql`
       }
     }
   }
-`;
+`
 
-export default graphql(registerMutation)(Register);
+export default graphql(registerMutation)(Register)

@@ -33,7 +33,7 @@ const SideBarListHeader = styled.li`
   ${paddingLeft};
 `
 
-const PushLeft = styled.div`
+const PushRight = styled.div`
   ${paddingLeft};
 `
 
@@ -53,10 +53,10 @@ const user = ({ id, name }) => (
 
 export default ({ teamName, username, channels, users }) => (
   <ChannelWrapper>
-    <PushLeft>
+    <PushRight>
       <TeamNameHeader>{teamName}</TeamNameHeader>
       {username}
-    </PushLeft>
+    </PushRight>
     <div>
       <SideBarList>
         <SideBarListHeader>Channels</SideBarListHeader>
