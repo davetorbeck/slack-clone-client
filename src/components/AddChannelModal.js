@@ -1,8 +1,10 @@
 import React from 'react'
 import { Form, Input, Button, Modal } from 'semantic-ui-react'
 import { withFormik } from 'formik'
-import gql from 'graphql-tag'
 import { compose, graphql } from 'react-apollo'
+import { allTeamsQuery } from '../graphql/team'
+import gql from 'graphql-tag'
+import findIndex from 'lodash/findIndex'
 
 const AddChannelModal = ({ open, onClose, values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
   <Modal open={open} onClose={onClose}>
@@ -34,7 +36,13 @@ const AddChannelModal = ({ open, onClose, values, handleChange, handleBlur, hand
 
 const createChannelMutation = gql`
   mutation($teamId: Int!, $name: String!) {
-    createChannel(teamId: $teamId, name: $name)
+    createChannel(teamId: $teamId, name: $name) {
+      ok
+      channel {
+        id
+        name
+      }
+    }
   }
 `
 
@@ -43,7 +51,34 @@ export default compose(
   withFormik({
     mapPropsToValues: () => ({ name: '' }),
     handleSubmit: async (values, { props: { onClose, teamId, mutate }, setSubmitting }) => {
-      await mutate({ variables: { teamId, name: values.name } })
+      await mutate({
+        variables: { teamId, name: values.name },
+        optimisticResponse: {
+          createChannel: {
+            __typename: 'Mutation',
+            ok: true,
+            channel: {
+              __typename: 'Channel',
+              id: -1,
+              name: values.name,
+            },
+          },
+        },
+        update: (store, { date: { createChannel } }) => {
+          const { ok, channel } = createChannel
+          if (!ok) {
+            return
+          }
+
+          const data = store.readQuery({ query: allTeamsQuery })
+          console.log(data)
+
+          const teamIdx = findIndex(data.allTeams, ['id', teamId])
+          data.allTeams[teamIdx].channels.push(channel)
+
+          store.writeQuery({ query: allTeamsQuery, data })
+        },
+      })
       onClose()
       setSubmitting(false)
     },
