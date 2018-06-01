@@ -8,14 +8,6 @@ import findIndex from 'lodash/findIndex'
 
 import { allTeamsQuery } from '../graphql/team'
 
-const styles = {
-  modal: {
-    marginTop: '0px !important',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-}
-
 const ModalWrapper = styled(Modal)`
   &&& {
     margin-top: 0px !important;
