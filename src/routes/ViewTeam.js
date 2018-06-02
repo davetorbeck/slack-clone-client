@@ -19,20 +19,14 @@ const ViewTeam = ({
     return null
   }
 
-  const teamIdx = !!teamId ? findIndex(allTeams, ['id', parseInt(teamId, 10)]) : 0
+  const teamIdx = teamId ? findIndex(allTeams, ['id', parseInt(teamId, 10)]) : 0
   const team = allTeams[teamIdx]
-  const channelIdx = !!channelId ? findIndex(team.channels, ['id', parseInt(channelId, 10)]) : 0
+  const channelIdx = channelId ? findIndex(team.channels, ['id', parseInt(channelId, 10)]) : 0
   const channel = team.channels[channelIdx]
-
+  const teams = allTeams.map((t) => ({ id: t.id, letter: t.name.charAt(0).toUpperCase() }))
   return (
     <AppLayout>
-      <Sidebar
-        teams={allTeams.map((t) => ({
-          id: t.id,
-          letter: t.name.charAt(0).toUpperCase(),
-        }))}
-        team={team}
-      />
+      <Sidebar teams={teams} team={team} />
       <Header channelName={channel.name} />
       <Messages>
         <ul className="message-list">
