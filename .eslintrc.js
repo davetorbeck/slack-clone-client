@@ -13,7 +13,7 @@ module.exports = {
   },
   rules: {
     'object-curly-spacing': 0,
-    'max-len': [1, { code: 120 }],
+    'max-len': [1, { code: 100 }],
     'valid-jsdoc': 0,
     'require-jsdoc': 0,
     'react/display-name': 0,
