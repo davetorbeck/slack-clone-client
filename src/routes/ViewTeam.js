@@ -11,7 +11,7 @@ import MessageContainer from '../containers/MessageContainer'
 import { allTeamsQuery } from '../graphql/team'
 
 const ViewTeam = ({
-  data: { loading, allTeams },
+  data: { loading, allTeams, inviteTeams },
   match: {
     params: { teamId, channelId },
   },
@@ -42,7 +42,7 @@ const ViewTeam = ({
       <Sidebar teams={normalizedTeams} team={team} />
       {channel && <Header channelName={channel.name} />}
       {channel && <MessageContainer channelId={channel.id} />}
-      {channel && <SendMessage channelName={channel.name} />}
+      {channel && <SendMessage channelId={channel.id} channelName={channel.name} />}
     </AppLayout>
   )
 }

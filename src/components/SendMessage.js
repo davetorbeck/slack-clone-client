@@ -12,7 +12,14 @@ const SendMessageWrapper = styled.div`
 
 const ENTER_KEY = 13
 
-const SendMessage = ({ channelName, values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+const SendMessage = ({
+  channelName,
+  values,
+  handleChange,
+  handleBlur,
+  handleSubmit,
+  isSubmitting,
+}) => (
   <SendMessageWrapper>
     <Input
       onKeyDown={(e) => {

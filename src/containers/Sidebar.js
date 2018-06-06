@@ -27,7 +27,8 @@ export default class Sidebar extends React.Component {
     const { openInvitePeopleModal, openAddChannelModal } = this.state
 
     let username = ''
-    let isWner = false
+    let isOwner = false
+
     try {
       const token = localStorage.getItem('token')
       const { user } = decode(token)

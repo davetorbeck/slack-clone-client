@@ -7,24 +7,23 @@ import Messages from '../components/Messages'
 
 const newChannelMessageSubscription = gql`
   subscription($channelId: Int!) {
-    newChannelMessageSubscription(channelId: $channelId) {
+    newChannelMessage(channelId: $channelId) {
       id
       text
       user {
         username
       }
-
       created_at
     }
   }
 `
 
 class MessageContainer extends React.Component {
-  componentDidMount() {
+  componentWillMount() {
     this.unsubscribe = this.subscribe(this.props.channelId)
   }
 
-  shouldComponentUpdate() {
+  componentWillReceiveProps({ channelId }) {
     if (this.props.channelId !== channelId) {
       if (this.unsubscribe) {
         this.unsubscribe()
@@ -39,14 +38,16 @@ class MessageContainer extends React.Component {
     }
   }
 
-  subscribe = (channelId) => {
+  subscribe = (channelId) =>
     this.props.data.subscribeToMore({
       document: newChannelMessageSubscription,
       variables: {
         channelId,
       },
       updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData) return prev
+        if (!subscriptionData) {
+          return prev
+        }
 
         return {
           ...prev,
@@ -54,13 +55,11 @@ class MessageContainer extends React.Component {
         }
       },
     })
-  }
 
   render() {
     const {
       data: { loading, messages },
     } = this.props
-
     return loading ? null : (
       <Messages>
         <Comment.Group>
@@ -75,7 +74,7 @@ class MessageContainer extends React.Component {
                 <Comment.Actions>
                   <Comment.Action>Reply</Comment.Action>
                 </Comment.Actions>
-              </Comment.Content>g
+              </Comment.Content>
             </Comment>
           ))}
         </Comment.Group>

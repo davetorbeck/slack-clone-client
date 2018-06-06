@@ -1,15 +1,15 @@
-import React from 'react'
-import decode from 'jwt-decode'
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
-import Home from './Home'
-import Register from './Register'
-import Login from './Login'
-import CreateTeam from './CreateTeam'
-import ViewTeam from './ViewTeam'
+import React from "react"
+import decode from "jwt-decode"
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
+import Home from "./Home"
+import Register from "./Register"
+import Login from "./Login"
+import CreateTeam from "./CreateTeam"
+import ViewTeam from "./ViewTeam"
 
 const isAuthenticated = () => {
-  const token = localStorage.getItem('token')
-  const refreshToken = localStorage.getItem('refreshToken')
+  const token = localStorage.getItem("token")
+  const refreshToken = localStorage.getItem("refreshToken")
   try {
     decode(token)
     decode(refreshToken)
@@ -23,13 +23,13 @@ const isAuthenticated = () => {
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={(props) =>
+    render={props =>
       isAuthenticated() ? (
         <Component {...props} />
       ) : (
         <Redirect
           to={{
-            pathname: '/login',
+            pathname: "/login"
           }}
         />
       )
@@ -43,7 +43,11 @@ export default () => (
       <Route path="/" exact component={Home} />
       <Route path="/register" exact component={Register} />
       <Route path="/login" exact component={Login} />
-      <Route path="/view-team/:teamId?/:channelId?" exact component={ViewTeam} />
+      <Route
+        path="/view-team/:teamId?/:channelId?"
+        exact
+        component={ViewTeam}
+      />
       <PrivateRoute path="/create-team" exact component={CreateTeam} />
     </Switch>
   </BrowserRouter>
