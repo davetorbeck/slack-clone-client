@@ -75,7 +75,7 @@ class MessageContainer extends React.Component {
                 <Comment.Actions>
                   <Comment.Action>Reply</Comment.Action>
                 </Comment.Actions>
-              </Comment.Content>
+              </Comment.Content>g
             </Comment>
           ))}
         </Comment.Group>
