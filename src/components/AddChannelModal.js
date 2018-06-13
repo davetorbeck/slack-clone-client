@@ -6,7 +6,7 @@ import { compose, graphql } from 'react-apollo'
 import styled from 'styled-components'
 import findIndex from 'lodash/findIndex'
 
-import { allTeamsQuery } from '../graphql/team'
+import { meQuery } from '../graphql/team'
 
 const ModalWrapper = styled(Modal)`
   &&& {
@@ -16,7 +16,15 @@ const ModalWrapper = styled(Modal)`
   }
 `
 
-const AddChannelModal = ({ open, onClose, values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+const AddChannelModal = ({
+  open,
+  onClose,
+  values,
+  handleChange,
+  handleBlur,
+  handleSubmit,
+  isSubmitting,
+}) => (
   <ModalWrapper open={open} onClose={onClose}>
     <Modal.Header>Add Channel</Modal.Header>
     <Modal.Content>
@@ -80,9 +88,9 @@ export default compose(
             return
           }
 
-          const data = store.readQuery({ query: allTeamsQuery })
-          const teamIdx = findIndex(data.allTeams, ['id', teamId])
-          data.allTeams[teamIdx].channels.push(channel)
+          const data = store.readQuery({ query: meQuery })
+          const teamIdx = findIndex(data.me.teams, ['id', teamId])
+          data.me.teams[teamIdx].channels.push(channel)
           store.writeQuery({ query: allTeamsQuery, data })
         },
       })
