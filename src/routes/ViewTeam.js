@@ -26,23 +26,26 @@ const ViewTeam = ({
     return <Redirect to="/create-team" />
   }
 
-  let teamIdInteger = parseInt(teamId, 10)
+  const teamIdInteger = parseInt(teamId, 10)
+  const teamIdx = teamIdInteger ? findIndex(teams, ['id', teamIdInteger]) : 0
+  const team = teamIdx === -1 ? teams[0] : teams[teamIdx]
 
-  if (!teamIdInteger) return <Redirect to="/view-team" />
-
-  const teamIdx = teamId ? findIndex(teams, ['id', parseInt(teamId, 10)]) : 0
-  const team = teamIdx === -1 ? teams[teamIdx] : teams[teamIdx]
   const channelIdInteger = parseInt(channelId, 10)
   const channelIdx = channelIdInteger ? findIndex(team.channels, ['id', channelIdInteger]) : 0
   const channel = channelIdx === -1 ? team.channels[0] : team.channels[channelIdx]
-  const normalizedTeams = teams.map((t) => ({ id: t.id, letter: t.name.charAt(0).toUpperCase() }))
 
   return (
     <AppLayout>
-      <Sidebar teams={normalizedTeams} team={team} />
+      <Sidebar
+        teams={teams.map((t) => ({
+          id: t.id,
+          letter: t.name.charAt(0).toUpperCase(),
+        }))}
+        team={team}
+      />
       {channel && <Header channelName={channel.name} />}
       {channel && <MessageContainer channelId={channel.id} />}
-      {channel && <SendMessage channelId={channel.id} channelName={channel.name} />}
+      {channel && <SendMessage channelName={channel.name} channelId={channel.id} />}
     </AppLayout>
   )
 }

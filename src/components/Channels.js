@@ -57,7 +57,16 @@ const user = ({ id, name }) => (
   </SideBarListItem>
 )
 
-export default ({ teamName, username, channels, users, onAddChannelClick, teamId, onInvitePeopleClick, isOwner }) => (
+export default ({
+  teamName,
+  username,
+  channels,
+  users,
+  onAddChannelClick,
+  teamId,
+  onInvitePeopleClick,
+  isOwner,
+}) => (
   <ChannelWrapper>
     <PushRight>
       <TeamNameHeader>{teamName}</TeamNameHeader>
