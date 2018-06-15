@@ -2,9 +2,10 @@ import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
-import { ApolloLink, split } from 'apollo-link'
+import { ApolloLink, split, from } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
+import { onError } from 'apollo-link-error'
 
 const httpLink = createHttpLink({ uri: 'http://localhost:8081/graphql' })
 
@@ -50,14 +51,27 @@ const wsLink = new WebSocketLink({
   },
 })
 
-const link = split(
-  ({ query }) => {
-    const { kind, operation } = getMainDefinition(query)
-    return kind === 'OperationDefinition' && operation === 'subscription'
-  },
-  wsLink,
-  httpLinkWithMiddleware
-)
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+    )
+  }
+
+  if (networkError) console.log(`[Network error]: ${networkError}`)
+})
+
+const link = from([
+  errorLink,
+  split(
+    ({ query }) => {
+      const { kind, operation } = getMainDefinition(query)
+      return kind === 'OperationDefinition' && operation === 'subscription'
+    },
+    wsLink,
+    httpLinkWithMiddleware
+  ),
+])
 
 export default new ApolloClient({
   link,

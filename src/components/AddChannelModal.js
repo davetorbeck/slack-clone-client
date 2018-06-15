@@ -91,7 +91,7 @@ export default compose(
           const data = store.readQuery({ query: meQuery })
           const teamIdx = findIndex(data.me.teams, ['id', teamId])
           data.me.teams[teamIdx].channels.push(channel)
-          store.writeQuery({ query: allTeamsQuery, data })
+          store.writeQuery({ query: meQuery, data })
         },
       })
       onClose()

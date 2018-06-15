@@ -1,5 +1,4 @@
 import React from 'react'
-import decode from 'jwt-decode'
 
 import Channels from '../components/Channels'
 import Teams from '../components/Teams'
