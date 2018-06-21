@@ -5,6 +5,10 @@ export const meQuery = gql`
     me {
       id
       username
+      directMessageMembers {
+        id
+        username
+      }
       teams {
         id
         name
