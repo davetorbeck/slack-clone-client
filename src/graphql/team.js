@@ -5,13 +5,14 @@ export const meQuery = gql`
     me {
       id
       username
-      directMessageMembers {
-        id
-        username
-      }
       teams {
         id
         name
+        admin
+        directMessageMembers {
+          id
+          username
+        }
         channels {
           id
           name
@@ -20,3 +21,5 @@ export const meQuery = gql`
     }
   }
 `
+
+export const idk = {}

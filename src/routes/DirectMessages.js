@@ -13,7 +13,7 @@ import gql from 'graphql-tag'
 
 const ViewTeam = ({
   mutate,
-  data: { loading, me },
+  data: { loading, me, getUser },
   match: {
     params: { teamId, userId },
   },
